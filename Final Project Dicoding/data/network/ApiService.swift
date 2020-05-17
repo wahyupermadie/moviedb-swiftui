@@ -8,31 +8,35 @@
 
 import Foundation
 
-protocol MoviesRepository {
-    func fetchPopularMovies(responseData: @escaping (_ movieResponse: MovieResponse) -> Void, errorHandler: @escaping( _ errorState: Bool) -> Void)
+protocol IMoviesRepository {
+    func fetchPopularMovies(responseData: @escaping (_ movieResponse: MoviesResponse) -> Void, errorHandler: @escaping( _ errorState: Bool) -> Void)
 }
 
-class IMoviesRepository : MoviesRepository {
-    var urlComponents = URLComponents(string: "\(MovieDbUrl.BASE_URL)/\(MovieDbUrl.POPULAR_MOVIES))")
+class MoviesRepository : IMoviesRepository {
+    static let instance: IMoviesRepository = MoviesRepository()
+    
+    var urlComponents = URLComponents(string: "\(MovieDbUrl.BASE_URL)\(MovieDbUrl.POPULAR_MOVIES)")
     var queryItems = [URLQueryItem(name: "api_key", value: MovieDbUrl.API_KEY)]
     
     private let urlSession: URLSession = URLSession.shared
     
-    func fetchPopularMovies(responseData: @escaping (MovieResponse) -> Void, errorHandler: @escaping (Bool) -> Void) {
+    func fetchPopularMovies(responseData: @escaping (MoviesResponse) -> Void, errorHandler: @escaping (Bool) -> Void) {
         urlComponents!.queryItems = queryItems
         urlSession.dataTask(with: urlComponents!.url!) { (data, response, error) in
             if error != nil {
                 errorHandler(true)
                 return
             }
-            
             do {
-                let movie = try jsonDecoder.decode(MovieResponse.self, from: data!)
+                print(data!)
+                let movie = try JSONDecoder().decode(MoviesResponse.self, from: data!)
                 DispatchQueue.main.async {
                     responseData(movie)
                 }
             } catch {
-                errorHandler(true)
+                DispatchQueue.main.async {
+                    errorHandler(true)
+                }
             }
         }.resume()
     }

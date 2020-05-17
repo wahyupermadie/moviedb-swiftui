@@ -16,3 +16,17 @@ let jsonDecoder: JSONDecoder = {
     jsonDecoder.dateDecodingStrategy = .formatted(dateFormatter)
     return jsonDecoder
 }()
+
+var fakes: [Movie] {
+    return [
+        fake,
+        fake,
+        fake,
+        fake
+    ]
+}
+
+var fake: Movie {
+    Movie(adult: false, backdropPath: "", genreIds: [2,3,4], id: 45, originalLanguage: "hahaha", originalTitle: "Wahyu Permado", overview: "hello bro", popularity: 45, posterPath: "hahaha", releaseDate: "212121", title: "Wahyu permadi", video: false, voteAverage: 4.6, voteCount: 1000)
+}
+    

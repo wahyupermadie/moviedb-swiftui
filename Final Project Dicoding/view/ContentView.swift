@@ -9,10 +9,39 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @ObservedObject var popularMovieVM : PopularMovieViewModel =  PopularMovieViewModel()
     var body: some View {
         NavigationView {
-            Text("hello").navigationBarTitle("hahha")
-        }.navigationBarTitle("Movie List")
+            ZStack {
+                if popularMovieVM.isLoading {
+                    ActivityIndicatorView()
+                }else{
+                    List {
+                        ForEach(popularMovieVM.results) { (row: MovieRow) in
+                            MovieItem(movies: row.movies)
+                        }
+                    }
+                }
+            }
+            .navigationBarTitle("Popular Movies")
+            .navigationBarItems(trailing:
+                HStack {
+                    Button(action: {
+                        
+                    }){
+                        Image("person")
+                        .resizable()
+                        .renderingMode(.original)
+                        .frame(width: 25, height: 25)
+                    }
+                }
+            )
+        }.onAppear(
+            perform: {
+                self.popularMovieVM.fetchPopularMovies()
+            }
+        )
     }
 }
 
