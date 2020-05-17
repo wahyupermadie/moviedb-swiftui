@@ -29,4 +29,9 @@ var fakes: [Movie] {
 var fake: Movie {
     Movie(adult: false, backdropPath: "", genreIds: [2,3,4], id: 45, originalLanguage: "hahaha", originalTitle: "Wahyu Permado", overview: "hello bro", popularity: 45, posterPath: "hahaha", releaseDate: "212121", title: "Wahyu permadi", video: false, voteAverage: 4.6, voteCount: 1000)
 }
-    
+
+extension String {
+    func getPosterPathUrl() -> URL {
+        return URL(string: "https://image.tmdb.org/t/p/w500\(self)")!
+    }
+}

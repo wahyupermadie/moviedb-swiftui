@@ -17,11 +17,10 @@ struct ContentView: View {
                 if popularMovieVM.isLoading {
                     ActivityIndicatorView()
                 }else{
-                    List {
-                        ForEach(popularMovieVM.results) { (row: MovieRow) in
-                            MovieItem(movies: row.movies)
-                        }
+                    ForEach(popularMovieVM.results) { (row: MovieRow) in
+                        MovieContainer(movies: row.movies)
                     }
+                    
                 }
             }
             .navigationBarTitle("Popular Movies")
