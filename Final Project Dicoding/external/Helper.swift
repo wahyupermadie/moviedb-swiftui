@@ -8,15 +8,6 @@
 
 import Foundation
 
-let jsonDecoder: JSONDecoder = {
-    let jsonDecoder = JSONDecoder()
-    jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy-mm-dd"
-    jsonDecoder.dateDecodingStrategy = .formatted(dateFormatter)
-    return jsonDecoder
-}()
-
 var fakes: [Movie] {
     return [
         fake,
@@ -30,8 +21,13 @@ var fake: Movie {
     Movie(adult: false, backdropPath: "", genreIds: [2,3,4], id: 45, originalLanguage: "hahaha", originalTitle: "Wahyu Permado", overview: "hello bro", popularity: 45, posterPath: "hahaha", releaseDate: "212121", title: "Wahyu permadi", video: false, voteAverage: 4.6, voteCount: 1000)
 }
 
+func getPosterPathUrl(url : String?) -> URL {
+    return URL(string: "https://image.tmdb.org/t/p/w500\(url ?? "")")!
+}
+
 extension String {
-    func getPosterPathUrl() -> URL {
-        return URL(string: "https://image.tmdb.org/t/p/w500\(self)")!
+    init?<T : LosslessStringConvertible>(_ value : T?) {
+        guard let value = value else { return nil }
+        self.init(value)
     }
 }

@@ -11,6 +11,7 @@ import UIKit
 
 protocol IPopularMovieViewModel {
     func fetchPopularMovies()
+//    func fetchPopularMovies(id: Int)
     func downloadImage(urlImage: URL)
 }
 
@@ -25,7 +26,7 @@ struct MovieRow: Identifiable {
     
 }
 
-class PopularMovieViewModel : IPopularMovieViewModel, ObservableObject {
+final class PopularMovieViewModel : IPopularMovieViewModel, ObservableObject {
     
     private let repository: IMoviesRepository
     
@@ -34,12 +35,14 @@ class PopularMovieViewModel : IPopularMovieViewModel, ObservableObject {
     @Published var results: [MovieRow] = []
     
     @Published var movieImage: UIImage? = nil
+    @Published var movie: Movie?
+    
     init(repository: IMoviesRepository = MoviesRepository.instance) {
         self.repository = repository
     }
     
     func fetchPopularMovies() {
-        isLoading = true
+        self.isLoading = true
         self.repository.fetchPopularMovies(responseData: { (responseData) in
             self.results.append(MovieRow(categoryName: "popular", movies: responseData.results!))
             self.isLoading = false
