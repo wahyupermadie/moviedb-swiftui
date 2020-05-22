@@ -22,28 +22,31 @@ struct ContentView: View {
                     }
                 }
             }
-            .onAppear(
+            .onDisappear(
                 perform: {
-                    self.popularMovieVM.isLoading = true
                     self.popularMovieVM.results.removeAll()
-                    self.popularMovieVM.fetchPopularMovies()
+            })
+                .onAppear(
+                    perform: {
+                        self.popularMovieVM.isLoading = true
+                        self.popularMovieVM.fetchPopularMovies()
                 }
             )
-            .navigationBarTitle("Popular Movies")
-            .navigationBarItems(trailing:
-                HStack {
-                    NavigationLink(destination: ProfileView(), tag: 1, selection: $selection){
-                        Button(action: {
-                            self.selection = 1
-
-                        }){
-                            Image("person")
-                            .resizable()
-                            .renderingMode(.original)
-                            .frame(width: 25, height: 25)
+                .navigationBarTitle("Popular Movies")
+                .navigationBarItems(trailing:
+                    HStack {
+                        NavigationLink(destination: ProfileView(), tag: 1, selection: $selection){
+                            Button(action: {
+                                self.selection = 1
+                                
+                            }){
+                                Image("person")
+                                    .resizable()
+                                    .renderingMode(.original)
+                                    .frame(width: 25, height: 25)
+                            }
                         }
                     }
-                }
             )
         }
     }
